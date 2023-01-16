@@ -31,6 +31,11 @@ class PostUserController extends Controller
         return $this->postUserService->create($request);
     }
 
+    public function show($id, Request $request)
+    {
+        return $this->postUserService->getById($id, $request);
+    }
+
     /**
      * @param $id
      * @param Request $request

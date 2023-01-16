@@ -58,11 +58,12 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/update/profile/{id}', [ProfileUserController::class, 'update']);
-        Route::post('/show/profile/{id}', [ProfileUserController::class, 'show']);
+        Route::get('/show/profile/{id}', [ProfileUserController::class, 'show']);
 
         Route::group(['prefix' => 'post'], function () {
             Route::get('/paginate', [PostUserController::class, 'paginate']);
             Route::post('/create', [PostUserController::class, 'create']);
+            Route::get('/show/{id}', [PostUserController::class, 'show']);
             Route::post('/update/{id}', [PostUserController::class, 'update']);
             Route::delete('/delete/{id}', [PostUserController::class, 'delete']);
         });

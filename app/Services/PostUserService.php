@@ -47,7 +47,7 @@ class PostUserService implements BaseService
                 $record = new Post();
                 $record->judul = $request->judul;
                 $record->categories = $request->categories;
-                $record->images = Base64Converter::base64ToImage("blogs", $request->images);;
+                $record->images = Base64Converter::base64ToImage("blogs", $request->images);
                 $record->description = $request->description;
                 $record->created_at = DateTimeConverter::getDateTimeNow();
                 $this->postRepository->create($record->toArray());
@@ -105,19 +105,19 @@ class PostUserService implements BaseService
         $record = $this->postRepository->getById($id);
 
         try {
-            if ($request->hasFile('images')) {
-                $file = $request->file('images');
-                $filename = "post-" . time() . '.' . $file->getClientOriginalExtension();
-                $imagePath = '/public/upload/images';
-                $file->move(public_path($imagePath), $filename);
+//            if ($request->hasFile('images')) {
+//                $file = $request->file('images');
+//                $filename = "post-" . time() . '.' . $file->getClientOriginalExtension();
+//                $imagePath = '/public/upload/images';
+//                $file->move(public_path($imagePath), $filename);
 
                 $record->judul = $request->judul;
                 $record->categories = $request->categories;
-                $record->images = $filename;
+                $record->images = Base64Converter::base64ToImage("blogs", $request->images);;
                 $record->description = $request->description;
                 $record->updated_at = DateTimeConverter::getDateTimeNow();
                 $this->postRepository->updateById($id, $record->toArray());
-            }
+//            }
         } catch (\Exception $ex) {
             Log::error(Constants::ERROR, ['message' => $ex->getMessage()]);
             throw new BusinessException(Constants::HTTP_CODE_500, Constants::ERROR_MESSAGE_9000, Constants::ERROR_CODE_9000);
