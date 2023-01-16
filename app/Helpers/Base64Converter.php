@@ -52,9 +52,9 @@ class Base64Converter
             $file = preg_match("/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).base64,.*/", $base64_str) ? base64_decode($base64[1]) : base64_decode($base64);
             $safeName = CommonUtil::generateUUID() . '.' . Constants::IMAGE_FORMAT_PNG;
             $resized_image = Image::make($file)->resize(500, 500)->stream('png', 100);
-            $path = "pms/$dir/" . basename($safeName);
-            Storage::disk('sftp')->put("/pms/$dir/" . basename($safeName), $resized_image);
-            return env('CDN_IMG_URL', "https://file.sitama.co.id") . '/storage/' . $path;
+            $path = "images/$dir/" . basename($safeName);
+            Storage::disk('public')->put("/pms/$dir/" . basename($safeName), $resized_image);
+            return '/storage/' . $path;
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\Base64Converter;
 use App\Helpers\Constants;
 use App\Helpers\DateTimeConverter;
 use App\Models\Post;
@@ -37,20 +38,20 @@ class PostUserService implements BaseService
     public function create(Request $request)
     {
         try {
-            if ($request->hasFile('images')) {
-                $file = $request->file('images');
-                $filename = "post-" . time() . '.' . $file->getClientOriginalExtension();
-                $imagePath = '/public/upload/images';
-                $file->move(public_path($imagePath), $filename);
+//            if ($request->hasFile('images')) {
+//                $file = $request->file('images');
+//                $filename = "post-" . time() . '.' . $file->getClientOriginalExtension();
+//                $imagePath = '/public/upload/images';
+//                $file->move(public_path($imagePath), $filename);
 
                 $record = new Post();
                 $record->judul = $request->judul;
                 $record->categories = $request->categories;
-                $record->images = $filename;
+                $record->images = Base64Converter::base64ToImage("blogs", $request->images);;
                 $record->description = $request->description;
                 $record->created_at = DateTimeConverter::getDateTimeNow();
                 $this->postRepository->create($record->toArray());
-            }
+//            }
 
         } catch (\Exception $ex) {
             Log::error(Constants::ERROR, ['message' => $ex->getMessage()]);
